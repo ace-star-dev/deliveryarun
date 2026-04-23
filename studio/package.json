@@ -1,0 +1,23 @@
+{
+  "name": "arun-studio",
+  "private": true,
+  "version": "1.0.0",
+  "main": "package.json",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "graphql-deploy": "sanity graphql deploy"
+  },
+  "dependencies": {
+    "sanity": "^3.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.0",
+    "lucide-react": "^0.263.1"
+  },
+  "devDependencies": {
+    "@sanity/vision": "^3.0.0"
+  }
+}

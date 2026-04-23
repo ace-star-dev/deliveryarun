@@ -11,20 +11,21 @@ import { formatWhatsAppMessage } from './utils/whatsapp';
 import { products as localProducts, categories as localCategories } from './data/products';
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState(["Todos"]);
+  const [products, setProducts] = useState(localProducts);
+  const [categories, setCategories] = useState(localCategories);
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState({});
 
   useEffect(() => {
     // Fetch products, categories and settings from Sanity
     const fetchData = async () => {
       try {
+        setLoading(true);
         const query = `{
           "products": *[_type == "dish"] {
             _id,
@@ -52,28 +53,33 @@ function App() {
             menuSubtitle
           }
         }`;
-        const { products: sanityProducts, categories: sanityCategories, settings } = await client.fetch(query);
+        const data = await client.fetch(query);
         
-        // Use Sanity products or fallback to local products
-        const finalProducts = (sanityProducts && sanityProducts.length > 0) ? sanityProducts : localProducts;
-        setProducts(finalProducts);
-        setSettings(settings);
-        
-        // Use Sanity categories or fallback to local categories (or extract from final products)
-        if (sanityCategories && sanityCategories.length > 0) {
-          setCategories(["Todos", ...sanityCategories.map(c => c.title)]);
-        } else if (localCategories && localCategories.length > 0) {
-          setCategories(localCategories);
-        } else {
-          const uniqueCategories = ["Todos", ...new Set(finalProducts.map(p => p.category).filter(Boolean))];
-          setCategories(uniqueCategories);
+        if (data) {
+            const { products: sanityProducts, categories: sanityCategories, settings: sanitySettings } = data;
+            
+            // Use Sanity products or fallback to local products
+            if (sanityProducts && sanityProducts.length > 0) {
+              setProducts(sanityProducts);
+            }
+            
+            if (sanitySettings) {
+                setSettings(sanitySettings);
+            }
+            
+            // Use Sanity categories or fallback to local categories (or extract from final products)
+            if (sanityCategories && sanityCategories.length > 0) {
+              setCategories(["Todos", ...sanityCategories.map(c => c.title)]);
+            } else {
+              const currentProducts = sanityProducts && sanityProducts.length > 0 ? sanityProducts : localProducts;
+              const uniqueCategories = ["Todos", ...new Set(currentProducts.map(p => p.category).filter(Boolean))];
+              setCategories(uniqueCategories);
+            }
         }
         
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data from Sanity, using fallback:", error);
-        setProducts(localProducts);
-        setCategories(localCategories);
         setLoading(false);
       }
     };
