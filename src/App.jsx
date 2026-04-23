@@ -8,6 +8,7 @@ import CheckoutModal from './components/CheckoutModal';
 import Footer from './components/Footer';
 import { client } from './utils/sanity';
 import { formatWhatsAppMessage } from './utils/whatsapp';
+import { products as localProducts, categories as localCategories } from './data/products';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -51,21 +52,28 @@ function App() {
             menuSubtitle
           }
         }`;
-        const { products, categories, settings } = await client.fetch(query);
-        setProducts(products);
+        const { products: sanityProducts, categories: sanityCategories, settings } = await client.fetch(query);
+        
+        // Use Sanity products or fallback to local products
+        const finalProducts = (sanityProducts && sanityProducts.length > 0) ? sanityProducts : localProducts;
+        setProducts(finalProducts);
         setSettings(settings);
         
-        // Extract unique categories from products if categories list is empty
-        if (categories && categories.length > 0) {
-          setCategories(["Todos", ...categories.map(c => c.title)]);
+        // Use Sanity categories or fallback to local categories (or extract from final products)
+        if (sanityCategories && sanityCategories.length > 0) {
+          setCategories(["Todos", ...sanityCategories.map(c => c.title)]);
+        } else if (localCategories && localCategories.length > 0) {
+          setCategories(localCategories);
         } else {
-          const uniqueCategories = ["Todos", ...new Set(products.map(p => p.category).filter(Boolean))];
+          const uniqueCategories = ["Todos", ...new Set(finalProducts.map(p => p.category).filter(Boolean))];
           setCategories(uniqueCategories);
         }
         
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data from Sanity:", error);
+        console.error("Error fetching data from Sanity, using fallback:", error);
+        setProducts(localProducts);
+        setCategories(localCategories);
         setLoading(false);
       }
     };
