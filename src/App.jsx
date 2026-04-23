@@ -103,7 +103,7 @@ function App() {
       window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
     };
-  }, [loading]);
+  }, []); // Changed to [] to run only on mount
 
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
