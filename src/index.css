@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap');
+
+:root {
+  /* Arun Asian Bar - Elite Identity */
+  --bg-primary: #080808;
+  --bg-secondary: #121212;
+  --black-obsidian: #080808;
+  --burgundy-red: #4a0404;
+  --accent-gold: #CFB53B;
+  --accent-gold-glow: rgba(207, 181, 59, 0.4);
+  
+  --text-primary: #FAF9F6;
+  --text-secondary: rgba(250, 249, 246, 0.6);
+  
+  --border-color: rgba(207, 181, 59, 0.15);
+  
+  --font-display: 'Cinzel', serif;
+  --font-base: 'Montserrat', sans-serif;
+  
+  --transition-luxury: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Mouse Follow / Interactive Background Brilliance */
+.mouse-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(74, 4, 4, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+/* Typography Elite */
+h1, h2, h3, .luxury-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Category Navigation - Ultra Modern & Luxury */
+.category-nav-container {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.category-tab {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--text-primary);
+  padding: 0.8rem 2rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: var(--transition-luxury);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-tab::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-gold);
+  transition: width 0.3s ease;
+}
+
+.category-tab:hover, .category-tab.active {
+  background: rgba(74, 4, 4, 0.4);
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+  color: var(--accent-gold);
+}
+
+.category-tab.active::before {
+  width: 100%;
+}
+
+/* Product Cards - Elite Depth */
+.elite-card {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  padding: 1px; /* Gradient border trick */
+  background-clip: padding-box;
+  transition: var(--transition-luxury);
+}
+
+.elite-card:hover {
+  transform: translateY(-15px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(74, 4, 4, 0.3);
+}
+
+.img-container {
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  background: var(--black-obsidian);
+}
+
+.fallback-luxury {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, var(--black-obsidian), var(--burgundy-red));
+  position: relative;
+}
+
+.fallback-luxury::after {
+  content: 'ARUN';
+  font-family: var(--font-display);
+  font-size: 3rem;
+  opacity: 0.05;
+  letter-spacing: 1rem;
+}
+
+/* Scroll Animations */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
