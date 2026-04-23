@@ -53,7 +53,7 @@ export default function Hero() {
             lineHeight: 0.85,
             marginBottom: '1rem',
             color: 'var(--text-primary)',
-            fontFamily: 'Cinzel',
+            fontFamily: 'var(--font-display)',
             letterSpacing: '-0.02em'
           }}>
             Arun Asian Bar

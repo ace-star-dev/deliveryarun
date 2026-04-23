@@ -28,7 +28,7 @@ export default function ProductCard({ product, onAdd }) {
           <div className="fallback-luxury">
             <span style={{ 
               color: 'var(--accent-gold)', 
-              fontFamily: 'Cinzel', 
+              fontFamily: 'var(--font-display)', 
               fontSize: '0.7rem', 
               letterSpacing: '0.3em',
               zIndex: 1
@@ -49,7 +49,7 @@ export default function ProductCard({ product, onAdd }) {
           fontSize: '0.85rem',
           fontWeight: 700,
           zIndex: 2,
-          fontFamily: 'Cinzel'
+          fontFamily: 'var(--font-display)'
         }}>
           {formatCurrency(product.price)}
         </div>
@@ -85,7 +85,7 @@ export default function ProductCard({ product, onAdd }) {
           fontWeight: 700,
           marginBottom: '1rem',
           color: 'var(--text-primary)',
-          fontFamily: 'Cinzel'
+          fontFamily: 'var(--font-display)'
         }}>
           {product.name}
         </h3>
@@ -98,7 +98,7 @@ export default function ProductCard({ product, onAdd }) {
           lineHeight: 2,
           opacity: 0.7,
           fontStyle: 'italic',
-          fontFamily: 'Montserrat'
+          fontFamily: 'var(--font-base)'
         }}>
           "{product.description}"
         </p>

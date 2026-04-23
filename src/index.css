@@ -1,21 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap');
 
 :root {
   /* Arun Asian Bar - Elite Identity */
-  --bg-primary: #080808;
-  --bg-secondary: #121212;
-  --black-obsidian: #080808;
-  --burgundy-red: #4a0404;
+  --bg-primary: #0B0B0B;
+  --bg-secondary: #0a0a0a;
+  --black-obsidian: #0B0B0B;
+  --burgundy-red: #800020;
   --accent-gold: #CFB53B;
   --accent-gold-glow: rgba(207, 181, 59, 0.4);
   
-  --text-primary: #FAF9F6;
-  --text-secondary: rgba(250, 249, 246, 0.6);
+  --text-primary: #f5f0e8;
+  --text-secondary: #b8b0a0;
   
   --border-color: rgba(207, 181, 59, 0.15);
   
-  --font-display: 'Cinzel', serif;
-  --font-base: 'Montserrat', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-base: 'Lato', sans-serif;
+  --font-accent: 'Cinzel', serif;
   
   --transition-luxury: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }

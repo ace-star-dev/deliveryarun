@@ -104,7 +104,7 @@ function App() {
             margin: '0 auto'
           }}>
             <span className="subtitle-gold" style={{ letterSpacing: '0.6em', color: 'var(--accent-gold)', marginBottom: '1rem', display: 'block' }}>Nuestra Selección</span>
-            <h2 className="main-title gold-glow-text" style={{ fontFamily: 'Cinzel', fontSize: 'clamp(2.5rem, 5vw, 4rem)', margin: 0, color: 'var(--text-primary)' }}>Obras Maestras</h2>
+            <h2 className="main-title gold-glow-text" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', margin: 0, color: 'var(--text-primary)' }}>Obras Maestras</h2>
             <div style={{ width: '80px', height: '2px', background: 'var(--accent-gold)', margin: '2rem auto' }}></div>
           </div>
           
@@ -154,8 +154,6 @@ function App() {
         total={total}
         onConfirm={handleCheckoutConfirm}
       />
-
-      <WhatsAppFloat />
     </div>
   );
 }

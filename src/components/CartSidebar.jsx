@@ -1,14 +1,8 @@
-import { X, Minus, Plus, ShoppingBag, MessageCircle, CreditCard } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, CreditCard } from 'lucide-react';
 import { formatCurrency } from '../data/products';
-import { formatWhatsAppMessage } from '../utils/whatsapp';
 
 export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQuantity, onCheckout }) {
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-  const handleWhatsAppClick = () => {
-    const url = formatWhatsAppMessage(cart, total);
-    window.open(url, '_blank');
-  };
 
   return (
     <>
@@ -137,27 +131,6 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <button 
-                onClick={handleWhatsAppClick}
-                style={{ 
-                  width: '100%', 
-                  padding: '0.85rem', 
-                  fontSize: '1rem', 
-                  background: '#25D366', 
-                  color: 'white', 
-                  borderRadius: '12px', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  gap: '0.5rem',
-                  fontWeight: '600',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                <MessageCircle size={18} /> Pedir por WhatsApp
-              </button>
-              
               <button 
                 className="btn-primary" 
                 onClick={onCheckout}

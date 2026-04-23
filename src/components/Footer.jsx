@@ -1,25 +1,11 @@
 import { MapPin, Phone, Clock } from 'lucide-react';
 
-const InstagramIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-);
-
-const FacebookIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-  </svg>
-);
-
 export default function Footer() {
   return (
     <footer style={{
       background: '#050505',
       padding: '4rem 0 2rem',
-      borderTop: '1px solid rgba(212, 175, 55, 0.1)',
+      borderTop: '1px solid rgba(207, 181, 59, 0.1)',
       color: 'var(--text-secondary)'
     }}>
       <div className="container">
@@ -27,58 +13,54 @@ export default function Footer() {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: '3rem',
-          marginBottom: '3rem'
+          marginBottom: '3rem',
+          textAlign: 'center'
         }}>
           
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h3 style={{ 
-              color: 'var(--accent-color)', 
+              color: 'var(--accent-gold)', 
               fontSize: '1.75rem', 
               marginBottom: '1rem',
               fontFamily: 'var(--font-display)',
               letterSpacing: '0.05em'
             }}>
-              ARUNA
+              ARUN ASIAN BAR
             </h3>
-            <p style={{ lineHeight: 1.8, marginBottom: '1.5rem' }}>
-              El santuario de la alta cocina asiática en Salto del Guairá. 
-              Donde la sofisticación y el sabor se encuentran para crear momentos inolvidables.
+            <p style={{ lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '300px' }}>
+              Una experiencia gastronómica única donde la tradición asiática se encuentra con la elegancia contemporánea en el corazón de Salto del Guairá.
             </p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
               <a href="https://www.instagram.com/arunasianbar/" target="_blank" rel="noreferrer" className="btn-icon">
                 <InstagramIcon size={20} />
               </a>
-              <a href="#" className="btn-icon">
-                <FacebookIcon size={20} />
-              </a>
             </div>
           </div>
 
-          <div>
-            <h4 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 600 }}>Ubicación y Contacto</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 600, fontFamily: 'var(--font-display)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Ubicación y Contacto</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+              <a href="https://www.google.com/maps/place/Arun+Asian+Bar/@-24.0702146,-54.3079814,17z/data=!3m1!4b1!4m6!3m5!1s0x94f4b1207237d7e9:0x78cf404bc63498f7!8m2!3d-24.0702146!4d-54.3079814!16s%2Fg%2F11ry5mx7tr?entry=ttu&g_ep=EgoyMDI2MDQyMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
                 <MapPin size={20} className="text-gold" />
-                <span>Salto del Guairá, Paraguay <br /> Plaza City - Shop. Mercosur</span>
-              </div>
+                <span style={{ textDecoration: 'underline' }}>Salto del Guairá, Paraguay</span>
+              </a>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <Phone size={20} className="text-gold" />
-                <span>+595 981 123 456</span>
+                <span>+595 994 194 471</span>
               </div>
             </div>
           </div>
 
-          <div>
-            <h4 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 600 }}>Horarios</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h4 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 600, fontFamily: 'var(--font-display)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Horarios</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <Clock size={20} className="text-gold" />
-                <div>
-                  <p>Mar - Jue: 19:00 - 00:00</p>
-                  <p>Vie - Dom: 19:00 - 01:30</p>
+                <div style={{ textAlign: 'left' }}>
+                  <p>Martes a Domingo</p>
+                  <p>19:00 - 00:00</p>
                 </div>
               </div>
-              <p style={{ fontSize: '0.85rem', color: 'var(--accent-color)', fontWeight: 600 }}>* Abierto los Domingos</p>
             </div>
           </div>
 
