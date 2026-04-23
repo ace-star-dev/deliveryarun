@@ -3,7 +3,17 @@ import { formatCurrency } from '../data/products';
 import { urlFor } from '../utils/sanity';
 
 export default function ProductCard({ product, onAdd }) {
-  const imageUrl = product.image ? urlFor(product.image).width(600).url() : null;
+  const getImageUrl = () => {
+    if (!product.image) return null;
+    // Se for um objeto (Sanity), usa urlFor
+    if (typeof product.image === 'object') {
+      return urlFor(product.image).width(600).url();
+    }
+    // Se for uma string (Local fallback), usa a string diretamente
+    return product.image;
+  };
+
+  const imageUrl = getImageUrl();
 
   return (
     <div className="elite-card" style={{

@@ -2,7 +2,15 @@ import { ChevronRight } from 'lucide-react';
 import { urlFor } from '../utils/sanity';
 
 export default function Hero({ settings }) {
-  const heroImageUrl = settings?.heroImage ? urlFor(settings.heroImage).url() : "/hero.jpg";
+  const getHeroImage = () => {
+    if (!settings?.heroImage) return "/hero.jpg";
+    if (typeof settings.heroImage === 'object') {
+      return urlFor(settings.heroImage).url();
+    }
+    return settings.heroImage;
+  };
+
+  const heroImageUrl = getHeroImage();
 
   return (
     <section style={{
