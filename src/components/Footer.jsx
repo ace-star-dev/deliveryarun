@@ -30,11 +30,6 @@ export default function Footer() {
             <p style={{ lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '300px' }}>
               Una experiencia gastronómica única donde la tradición asiática se encuentra con la elegancia contemporánea en el corazón de Salto del Guairá.
             </p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-              <a href="https://www.instagram.com/arunasianbar/" target="_blank" rel="noreferrer" className="btn-icon">
-                <InstagramIcon size={20} />
-              </a>
-            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
