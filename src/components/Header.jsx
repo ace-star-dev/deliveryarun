@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 
-export default function Header({ cartItemCount, onCartClick }) {
+export default function Header({ settings, cartItemCount, onCartClick }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -53,7 +53,7 @@ export default function Header({ cartItemCount, onCartClick }) {
         <nav style={{ display: 'none', gap: '3rem' }} className="desktop-nav">
           <a href="#" className="nav-link active">Inicio</a>
           <a href="#menu" className="nav-link">La Carta</a>
-          <a href="https://www.instagram.com/arunasianbar/" target="_blank" rel="noreferrer" className="nav-link">Instagram</a>
+          <a href={settings?.instagram || "https://www.instagram.com/arunasianbar/"} target="_blank" rel="noreferrer" className="nav-link">Instagram</a>
         </nav>
 
         <style>{`
@@ -166,7 +166,7 @@ export default function Header({ cartItemCount, onCartClick }) {
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '3rem', fontSize: '2.5rem', fontFamily: 'var(--font-display)' }}>
             <a href="#" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--accent-gold)', textDecoration: 'none' }}>Inicio</a>
             <a href="#menu" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>La Carta</a>
-            <a href="https://www.instagram.com/arunasianbar/" target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Instagram</a>
+            <a href={settings?.instagram || "https://www.instagram.com/arunasianbar/"} target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Instagram</a>
           </nav>
           
           <div style={{ marginTop: '5rem', color: 'var(--accent-gold)', opacity: 0.5, fontSize: '0.75rem', letterSpacing: '0.4em' }}>

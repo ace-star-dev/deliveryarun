@@ -1,5 +1,4 @@
-export const formatWhatsAppMessage = (cart, total, customerInfo = null) => {
-  const phoneNumber = "595981816445"; // Owner's number for testing
+export const formatWhatsAppMessage = (cart, total, customerInfo = null, phoneNumber = "595981816445") => {
   const currencyFormatter = new Intl.NumberFormat('es-PY', {
     style: 'currency',
     currency: 'PYG',

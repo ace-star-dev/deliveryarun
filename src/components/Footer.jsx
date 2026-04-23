@@ -1,6 +1,10 @@
 import { MapPin, Phone, Clock } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ settings }) {
+  const scheduleLines = settings?.schedule 
+    ? (Array.isArray(settings.schedule) ? settings.schedule : settings.schedule.split('\n'))
+    : ["Martes a Domingo", "19:00 - 00:00"];
+
   return (
     <footer style={{
       background: '#050505',
@@ -28,20 +32,20 @@ export default function Footer() {
               ARUN ASIAN BAR
             </h3>
             <p style={{ lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '300px' }}>
-              Una experiencia gastronómica única donde la tradición asiática se encuentra con la elegancia contemporánea en el corazón de Salto del Guairá.
+              {settings?.footerDescription || "Una experiencia gastronómica única donde la tradición asiática se encuentra con la elegancia contemporánea en el corazón de Salto del Guairá."}
             </p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h4 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', fontSize: '1.1rem', fontWeight: 600, fontFamily: 'var(--font-display)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Ubicación y Contacto</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-              <a href="https://www.google.com/maps/place/Arun+Asian+Bar/@-24.0702146,-54.3079814,17z/data=!3m1!4b1!4m6!3m5!1s0x94f4b1207237d7e9:0x78cf404bc63498f7!8m2!3d-24.0702146!4d-54.3079814!16s%2Fg%2F11ry5mx7tr?entry=ttu&g_ep=EgoyMDI2MDQyMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
+              <a href={settings?.addressLink || "https://www.google.com/maps/place/Arun+Asian+Bar/@-24.0702146,-54.3079814,17z/data=!3m1!4b1!4m6!3m5!1s0x94f4b1207237d7e9:0x78cf404bc63498f7!8m2!3d-24.0702146!4d-54.3079814!16s%2Fg%2F11ry5mx7tr?entry=ttu&g_ep=EgoyMDI2MDQyMC4wIKXMDSoASAFQAw%3D%3D"} target="_blank" rel="noreferrer" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
                 <MapPin size={20} className="text-gold" />
-                <span style={{ textDecoration: 'underline' }}>Salto del Guairá, Paraguay</span>
+                <span style={{ textDecoration: 'underline' }}>{settings?.address || "Salto del Guairá, Paraguay"}</span>
               </a>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <Phone size={20} className="text-gold" />
-                <span>+595 994 194 471</span>
+                <span>{settings?.whatsapp || "+595 994 194 471"}</span>
               </div>
             </div>
           </div>
@@ -52,8 +56,9 @@ export default function Footer() {
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <Clock size={20} className="text-gold" />
                 <div style={{ textAlign: 'left' }}>
-                  <p>Martes a Domingo</p>
-                  <p>19:00 - 00:00</p>
+                  {scheduleLines.map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
                 </div>
               </div>
             </div>

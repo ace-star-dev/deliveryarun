@@ -1,8 +1,9 @@
 import { Plus, Star } from 'lucide-react';
 import { formatCurrency } from '../data/products';
+import { urlFor } from '../utils/sanity';
 
 export default function ProductCard({ product, onAdd }) {
-  const hasImage = !!product.image;
+  const imageUrl = product.image ? urlFor(product.image).width(600).url() : null;
 
   return (
     <div className="elite-card" style={{
@@ -12,9 +13,9 @@ export default function ProductCard({ product, onAdd }) {
       position: 'relative'
     }}>
       <div className="img-container">
-        {hasImage ? (
+        {imageUrl ? (
           <img 
-            src={product.image} 
+            src={imageUrl} 
             alt={product.name} 
             style={{
               width: '100%',

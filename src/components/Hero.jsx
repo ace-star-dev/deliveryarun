@@ -1,6 +1,9 @@
 import { ChevronRight } from 'lucide-react';
+import { urlFor } from '../utils/sanity';
 
-export default function Hero() {
+export default function Hero({ settings }) {
+  const heroImageUrl = settings?.heroImage ? urlFor(settings.heroImage).url() : "/hero.jpg";
+
   return (
     <section style={{
       position: 'relative',
@@ -12,8 +15,8 @@ export default function Hero() {
     }}>
       {/* Immersive Image that dictates height */}
       <img 
-        src="/hero.jpg" 
-        alt="Arun Asian Experience" 
+        src={heroImageUrl} 
+        alt={settings?.heroTitle || "Arun Asian Experience"} 
         style={{
           width: '100%',
           height: '60vh',
@@ -56,7 +59,7 @@ export default function Hero() {
             fontFamily: 'var(--font-display)',
             letterSpacing: '-0.02em'
           }}>
-            Arun Asian Bar
+            {settings?.heroTitle || "Arun Asian Bar"}
           </h1>
 
           <span className="subtitle-gold" style={{ 
@@ -66,7 +69,7 @@ export default function Hero() {
             color: 'var(--accent-gold)', 
             fontSize: '0.85rem' 
           }}>
-            BIG DREAMS, GOOD MUSIC & EXPENSIVE TASTE
+            {settings?.heroSubtitle || "BIG DREAMS, GOOD MUSIC & EXPENSIVE TASTE"}
           </span>
 
           <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
