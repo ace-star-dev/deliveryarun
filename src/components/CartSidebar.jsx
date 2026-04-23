@@ -1,8 +1,15 @@
-import { X, Minus, Plus, ShoppingBag, CreditCard } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, CreditCard, ArrowLeft } from 'lucide-react';
 import { formatCurrency } from '../data/products';
 
 export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQuantity, onCheckout }) {
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const handleContinueShopping = () => {
+    onClose();
+    setTimeout(() => {
+      document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  };
 
   return (
     <>
@@ -145,6 +152,35 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
                 }}
               >
                 <CreditCard size={18} /> Finalizar Pedido
+              </button>
+
+              <button 
+                onClick={handleContinueShopping}
+                style={{ 
+                  width: '100%', 
+                  padding: '0.85rem', 
+                  fontSize: '0.9rem', 
+                  background: 'transparent',
+                  color: 'var(--text-secondary)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  gap: '0.5rem',
+                  cursor: 'pointer',
+                  transition: 'var(--transition-luxury)'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent-gold)';
+                  e.currentTarget.style.color = 'var(--accent-gold)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
+                  e.currentTarget.style.color = 'var(--text-secondary)';
+                }}
+              >
+                <ArrowLeft size={16} /> Continuar Comprando
               </button>
             </div>
           </div>
