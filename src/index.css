@@ -60,22 +60,38 @@ h1, h2, h3, .luxury-title {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  padding: 2rem 0;
-  flex-wrap: wrap;
+  padding: 1.5rem 1rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: rgba(11, 11, 11, 0.95);
+  backdrop-filter: blur(15px);
+  position: sticky;
+  top: 80px; /* Below header */
+  z-index: 50;
+  border-bottom: 1px solid var(--border-color);
+  margin: 0 -1rem;
+}
+
+.category-nav-container::-webkit-scrollbar {
+  display: none;
 }
 
 .category-tab {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(212, 175, 55, 0.2);
   color: var(--text-primary);
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 1.5rem;
   font-family: var(--font-display);
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
   cursor: pointer;
   transition: var(--transition-luxury);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .category-tab::before {
@@ -100,6 +116,59 @@ h1, h2, h3, .luxury-title {
   width: 100%;
 }
 
+/* Floating Cart Button for quick access */
+.floating-cart-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--accent-gold);
+  color: #000;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(207, 181, 59, 0.4);
+  z-index: 100;
+  cursor: pointer;
+  transition: var(--transition-luxury);
+  border: none;
+}
+
+.floating-cart-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(207, 181, 59, 0.6);
+}
+
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--burgundy-red);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+}
+
+/* Success animation for adding to cart */
+@keyframes cartBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.cart-animate {
+  animation: cartBounce 0.4s ease-out;
+}
+
 /* Product Cards - Elite Depth */
 .elite-card {
   background: rgba(10, 10, 10, 0.8);
@@ -108,6 +177,8 @@ h1, h2, h3, .luxury-title {
   padding: 1px; /* Gradient border trick */
   background-clip: padding-box;
   transition: var(--transition-luxury);
+  display: flex;
+  flex-direction: column;
 }
 
 .elite-card:hover {

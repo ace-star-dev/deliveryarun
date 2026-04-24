@@ -5,12 +5,27 @@ import { urlFor } from '../utils/sanity';
 export default function ProductCard({ product, onAdd }) {
   const getImageUrl = () => {
     if (!product.image) return null;
-    // Se for um objeto (Sanity), usa urlFor
-    if (typeof product.image === 'object') {
-      return urlFor(product.image).width(600).url();
+    
+    // Se for o fallback local que adicionamos
+    if (product.image.localPath) {
+      return product.image.localPath;
     }
-    // Se for uma string (Local fallback), usa a string diretamente
-    return product.image;
+
+    // Se for um objeto de asset da Sanity
+    if (product.image.asset) {
+      try {
+        return urlFor(product.image).width(600).url();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Se for uma string (caso antigo)
+    if (typeof product.image === 'string') {
+      return product.image;
+    }
+    
+    return null;
   };
 
   const imageUrl = getImageUrl();

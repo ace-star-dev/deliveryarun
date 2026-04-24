@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CategoryNav from './components/CategoryNav';
@@ -6,6 +6,7 @@ import ProductCard from './components/ProductCard';
 import CartSidebar from './components/CartSidebar';
 import CheckoutModal from './components/CheckoutModal';
 import Footer from './components/Footer';
+import { ShoppingBag } from 'lucide-react';
 import { client } from './utils/sanity';
 import { formatWhatsAppMessage } from './utils/whatsapp';
 import { products as localProducts, categories as localCategories } from './data/products';
@@ -20,6 +21,8 @@ function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [settings, setSettings] = useState({});
+  const [isCartAnimating, setIsCartAnimating] = useState(false);
+  const cartBtnRef = useRef(null);
 
   useEffect(() => {
     // Fetch products, categories and settings from Sanity
@@ -60,9 +63,33 @@ function App() {
             
             // Use Sanity products or fallback to local products
             if (sanityProducts && sanityProducts.length > 0) {
-              setProducts(sanityProducts);
-            }
-            
+              const productsWithImages = sanityProducts.map(p => {
+                // If Sanity has an image, use it. Otherwise, try to find the local fallback.
+                if (!p.image) {
+                  const localFileName = {
+                    "Sashimi Mostaza": "sashimi_mostaza.jpg",
+                    "Sashimi na Manteiga": "sashimi_manteiga.jpg",
+                    "Pulpo Canadiense": "pulpo.jpg",
+                    "Uramaki Bacon & Couve": "uramaki.jpg",
+                    "Niguiri de Salmón": "niguiri.jpg",
+                    "Niguiri de Salmón Trufado": "niguiri.jpg",
+                    "Poke II": "poke.jpg",
+                    "Poke Arun": "poke.jpg",
+                    "Mignon N’ Pasta": "mignon.jpg",
+                    "Mignon ao Molho de Ostras": "mignon.jpg",
+                    "Combinado Arun": "combinado.jpg",
+                    "Combo Especial (20 peças)": "combinado.jpg",
+                    "Lychee Martini": "drink.jpg"
+                  }[p.name];
+
+                  if (localFileName) {
+                    return { ...p, image: { localPath: `/${localFileName}` } };
+                  }
+                }
+                return p;
+              });
+              setProducts(productsWithImages);
+            }            
             if (sanitySettings) {
                 setSettings(sanitySettings);
             }
@@ -109,9 +136,10 @@ function App() {
       window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
     };
-  }, []); // Changed to [] to run only on mount
+  }, []);
 
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const filterProducts = activeCategory === "Todos" 
     ? products.filter(p => p.available !== false)
@@ -125,7 +153,10 @@ function App() {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-    setIsCartOpen(true);
+    
+    // Quick feedback instead of opening sidebar
+    setIsCartAnimating(true);
+    setTimeout(() => setIsCartAnimating(false), 400);
   };
 
   const removeFromCart = (id) => {
@@ -158,12 +189,12 @@ function App() {
         style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
       />
       
-      <Header settings={settings} cartItemCount={cart.reduce((acc, item) => acc + item.quantity, 0)} onCartClick={() => setIsCartOpen(true)} />
+      <Header settings={settings} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
       
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Hero settings={settings} />
         
-        <section id="menu" className="container" style={{ padding: '10rem 0' }}>
+        <section id="menu" className="container" style={{ padding: '4rem 0 10rem' }}>
           <div className="section-title-wrapper reveal-item" style={{ 
             textAlign: 'center', 
             display: 'flex', 
@@ -171,7 +202,7 @@ function App() {
             alignItems: 'center',
             width: '100%',
             maxWidth: '800px',
-            margin: '0 auto'
+            margin: '0 auto 3rem'
           }}>
             <span className="subtitle-gold" style={{ letterSpacing: '0.6em', color: 'var(--accent-gold)', marginBottom: '1rem', display: 'block' }}>{settings?.menuSubtitle || "Nuestra Selección"}</span>
             <h2 className="main-title gold-glow-text" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', margin: 0, color: 'var(--text-primary)' }}>{settings?.menuTitle || "Obras Maestras"}</h2>
@@ -184,25 +215,40 @@ function App() {
             </div>
           ) : (
             <>
-              <div className="reveal-item">
-                <CategoryNav 
-                  categories={categories} 
-                  activeCategory={activeCategory} 
-                  onSelect={setActiveCategory} 
-                />
-              </div>
+              <CategoryNav 
+                categories={categories} 
+                activeCategory={activeCategory} 
+                onSelect={(cat) => {
+                  setActiveCategory(cat);
+                  // Scroll to menu top when changing category for better UX
+                  const menuEl = document.getElementById('menu');
+                  if (menuEl) {
+                    const offset = 140; // sticky header + nav
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = menuEl.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }} 
+              />
               
               <div style={{ 
                 display: 'grid', 
                 gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
                 gap: '2.5rem', 
-                marginTop: '5rem',
+                marginTop: '3rem',
                 maxWidth: '1200px',
-                margin: '5rem auto 0',
-                justifyContent: 'center'
+                margin: '3rem auto 0',
+                justifyContent: 'center',
+                padding: '0 1rem'
               }}>
                 {filterProducts.map((product, index) => (
-                  <div key={product._id} className="reveal-item" style={{ transitionDelay: `${index * 0.1}s` }}>
+                  <div key={product._id} className="reveal-item visible" style={{ transitionDelay: `${index * 0.05}s` }}>
                     <ProductCard product={product} onAdd={addToCart} />
                   </div>
                 ))}
@@ -211,6 +257,18 @@ function App() {
           )}
         </section>
       </main>
+
+      {/* Floating Cart Button */}
+      {cartItemCount > 0 && (
+        <button 
+          className={`floating-cart-btn ${isCartAnimating ? 'cart-animate' : ''}`}
+          onClick={() => setIsCartOpen(true)}
+          ref={cartBtnRef}
+        >
+          <ShoppingBag size={28} />
+          <span className="cart-badge">{cartItemCount}</span>
+        </button>
+      )}
 
       <Footer settings={settings} />
 
