@@ -181,7 +181,7 @@ function App() {
   };
 
   const handleCheckoutConfirm = (customerInfo) => {
-    const url = formatWhatsAppMessage(cart, total, customerInfo, settings?.whatsapp);
+    const url = formatWhatsAppMessage(cart, total, customerInfo, settings?.whatsapp || "+595984431766");
     window.open(url, '_blank');
     setIsCheckoutOpen(false);
     setCart([]);

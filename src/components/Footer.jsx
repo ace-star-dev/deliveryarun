@@ -45,7 +45,7 @@ export default function Footer({ settings }) {
               </a>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <Phone size={20} className="text-gold" />
-                <span>{settings?.whatsapp || "+595 994 194 471"}</span>
+                <span>{settings?.whatsapp || "+595 984 431 766"}</span>
               </div>
             </div>
           </div>
