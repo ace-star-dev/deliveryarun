@@ -63,8 +63,9 @@ function App() {
             const { products: sanityProducts, categories: sanityCategories, settings: sanitySettings } = data;
             
             // Use Sanity products or fallback to local products
+            let finalProducts = [];
             if (sanityProducts && sanityProducts.length > 0) {
-              const productsWithImages = sanityProducts.map(p => {
+              finalProducts = sanityProducts.map(p => {
                 // If Sanity has an image, use it. Otherwise, try to find the local fallback.
                 if (!p.image) {
                   const localFileName = {
@@ -89,8 +90,11 @@ function App() {
                 }
                 return p;
               });
-              setProducts(productsWithImages);
-            }            
+            } else {
+              // Normalize local products to use _id
+              finalProducts = localProducts.map(p => ({ ...p, _id: p.id.toString() }));
+            }
+            setProducts(finalProducts);
             if (sanitySettings) {
                 setSettings(sanitySettings);
             }
@@ -292,6 +296,8 @@ function App() {
         cart={cart}
         onRemove={removeFromCart}
         onUpdateQuantity={updateQuantity}
+        products={products}
+        onAdd={addToCart}
         onCheckout={() => {
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
