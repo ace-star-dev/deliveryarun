@@ -6,7 +6,7 @@ import ProductCard from './components/ProductCard';
 import CartSidebar from './components/CartSidebar';
 import CheckoutModal from './components/CheckoutModal';
 import Footer from './components/Footer';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, CheckCircle } from 'lucide-react';
 import { client } from './utils/sanity';
 import { formatWhatsAppMessage } from './utils/whatsapp';
 import { products as localProducts, categories as localCategories } from './data/products';
@@ -22,6 +22,7 @@ function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [settings, setSettings] = useState({});
   const [isCartAnimating, setIsCartAnimating] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const cartBtnRef = useRef(null);
 
   useEffect(() => {
@@ -154,9 +155,11 @@ function App() {
       return [...prev, { ...product, quantity: 1 }];
     });
     
-    // Quick feedback instead of opening sidebar
+    // Quick feedback
     setIsCartAnimating(true);
-    setTimeout(() => setIsCartAnimating(false), 400);
+    setShowNotification(true);
+    setTimeout(() => setIsCartAnimating(false), 500);
+    setTimeout(() => setShowNotification(false), 2000);
   };
 
   const removeFromCart = (id) => {
@@ -258,14 +261,25 @@ function App() {
         </section>
       </main>
 
+      {/* Cart Notification */}
+      {showNotification && (
+        <div className="cart-notification">
+          <CheckCircle size={18} /> ITEM AÑADIDO
+        </div>
+      )}
+
       {/* Floating Cart Button */}
       {cartItemCount > 0 && (
         <button 
           className={`floating-cart-btn ${isCartAnimating ? 'cart-animate' : ''}`}
           onClick={() => setIsCartOpen(true)}
           ref={cartBtnRef}
+          style={{ 
+            display: 'flex', 
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)' 
+          }}
         >
-          <ShoppingBag size={28} />
+          <ShoppingBag size={30} strokeWidth={1.5} />
           <span className="cart-badge">{cartItemCount}</span>
         </button>
       )}

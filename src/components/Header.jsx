@@ -113,35 +113,11 @@ export default function Header({ settings, cartItemCount, onCartClick }) {
         `}</style>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <div className="btn-icon-luxury" onClick={onCartClick}>
-            <ShoppingBag size={18} strokeWidth={1.5} />
-            {cartItemCount > 0 && (
-              <span style={{
-                position: 'absolute', 
-                top: '-2px', 
-                right: '-2px', 
-                background: 'var(--accent-burgundy)', 
-                color: 'var(--text-primary)', 
-                fontSize: '0.65rem', 
-                fontWeight: 'bold',
-                width: '18px', 
-                height: '18px', 
-                borderRadius: '50%',
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)'
-              }}>
-                {cartItemCount}
-              </span>
-            )}
-          </div>
-          
           <div className="btn-icon-luxury mobile-toggle" onClick={() => setMobileMenuOpen(true)}>
             <Menu size={18} strokeWidth={1.5} />
           </div>
         </div>
+
       </div>
 
       {/* Mobile Menu Overlay */}
