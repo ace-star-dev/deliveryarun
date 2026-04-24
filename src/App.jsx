@@ -244,16 +244,7 @@ function App() {
                 }} 
               />
               
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
-                gap: '2.5rem', 
-                marginTop: '3rem',
-                maxWidth: '1200px',
-                margin: '3rem auto 0',
-                justifyContent: 'center',
-                padding: '0 1rem'
-              }}>
+              <div className="product-grid">
                 {filterProducts.map((product, index) => (
                   <div key={product._id} className="reveal-item visible" style={{ transitionDelay: `${index * 0.05}s` }}>
                     <ProductCard product={product} onAdd={addToCart} />

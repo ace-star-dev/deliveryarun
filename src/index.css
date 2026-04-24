@@ -196,12 +196,30 @@ h1, h2, h3, .luxury-title {
   animation: cartBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Product Grid - Responsive */
+.product-grid {
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 1rem; 
+  margin-top: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+  }
+}
+
 /* Product Cards - Elite Depth */
 .elite-card {
   background: rgba(10, 10, 10, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(212, 175, 55, 0.1);
-  padding: 1px; /* Gradient border trick */
   background-clip: padding-box;
   transition: var(--transition-luxury);
   display: flex;
