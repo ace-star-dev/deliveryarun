@@ -48,7 +48,8 @@ export default function Hero({ settings }) {
         transform: 'translate(-50%, -50%)',
         zIndex: 10,
         textAlign: 'center',
-        width: '100%'
+        width: '100%',
+        padding: '0 1rem'
       }}>
         <div className="reveal-item">
           <img 
