@@ -3,7 +3,6 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import CategoryNav from './components/CategoryNav';
 import ProductCard from './components/ProductCard';
-import CategoryCards from './components/CategoryCards';
 import CartSidebar from './components/CartSidebar';
 import CheckoutModal from './components/CheckoutModal';
 import WhatsAppFloat from './components/WhatsAppFloat';
@@ -30,7 +29,6 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Mouse/Interactive scroll progress
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
@@ -43,7 +41,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Fetch products, categories and settings from Sanity
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -79,11 +76,9 @@ function App() {
         if (data) {
             const { products: sanityProducts, categories: sanityCategories, settings: sanitySettings } = data;
             
-            // Use Sanity products or fallback to local products
             let finalProducts = [];
             if (sanityProducts && sanityProducts.length > 0) {
               finalProducts = sanityProducts.map(p => {
-                // If Sanity has an image, use it. Otherwise, try to find the local fallback.
                 if (!p.image) {
                   const localFileName = {
                     "Sashimi Mostaza": "sashimi_mostaza.jpg",
@@ -108,7 +103,6 @@ function App() {
                 return p;
               });
             } else {
-              // Normalize local products to use _id
               finalProducts = localProducts.map(p => ({ ...p, _id: p.id.toString() }));
             }
             setProducts(finalProducts);
@@ -116,7 +110,6 @@ function App() {
                 setSettings(sanitySettings);
             }
             
-            // Use Sanity categories or fallback to local categories (or extract from final products)
             if (sanityCategories && sanityCategories.length > 0) {
               setCategories(["Todos", ...sanityCategories.map(c => c.title)]);
             } else {
@@ -140,7 +133,6 @@ function App() {
     };
     window.addEventListener('mousemove', handleMouseMove);
     
-    // Intersection Observer for reveal effect
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -149,7 +141,6 @@ function App() {
       });
     }, { threshold: 0.1 });
 
-    // Give some time for products to load before observing
     setTimeout(() => {
         document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
     }, 1000);
@@ -176,7 +167,6 @@ function App() {
       return [...prev, { ...product, quantity: 1 }];
     });
     
-    // Quick feedback
     setIsCartAnimating(true);
     setShowNotification(true);
     setTimeout(() => setIsCartAnimating(false), 500);
@@ -207,10 +197,8 @@ function App() {
 
   return (
     <div style={{ position: 'relative' }}>
-      {/* Scroll Progress Bar */}
       <div className="scroll-progress" ref={scrollProgressRef}></div>
       
-      {/* Interactive Mouse Glow */}
       <div 
         className="mouse-glow" 
         style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
@@ -220,25 +208,6 @@ function App() {
       
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Hero settings={settings} />
-        
-        <section className="container" style={{ padding: '6rem 0' }}>
-           <div className="reveal-item" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <span className="subtitle-gold" style={{ letterSpacing: '0.6em', color: 'var(--accent-gold)', marginBottom: '1rem', display: 'block' }}>EXPERIENCIA</span>
-              <h2 className="main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Explora por Categoría</h2>
-           </div>
-           <CategoryCards onSelectCategory={(cat) => {
-             setActiveCategory(cat);
-             const menuEl = document.getElementById('menu');
-             if (menuEl) {
-               const offset = 140;
-               const bodyRect = document.body.getBoundingClientRect().top;
-               const elementRect = menuEl.getBoundingClientRect().top;
-               const elementPosition = elementRect - bodyRect;
-               const offsetPosition = elementPosition - offset;
-               window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-             }
-           }} />
-        </section>
         
         <section id="menu" className="container" style={{ padding: '4rem 0 10rem' }}>
           <div className="section-title-wrapper reveal-item" style={{ 
@@ -266,10 +235,9 @@ function App() {
                 activeCategory={activeCategory} 
                 onSelect={(cat) => {
                   setActiveCategory(cat);
-                  // Scroll to menu top when changing category for better UX
                   const menuEl = document.getElementById('menu');
                   if (menuEl) {
-                    const offset = 140; // sticky header + nav
+                    const offset = 140; 
                     const bodyRect = document.body.getBoundingClientRect().top;
                     const elementRect = menuEl.getBoundingClientRect().top;
                     const elementPosition = elementRect - bodyRect;
@@ -295,14 +263,12 @@ function App() {
         </section>
       </main>
 
-      {/* Cart Notification */}
       {showNotification && (
         <div className="cart-notification">
           <CheckCircle size={18} /> ITEM AÑADIDO
         </div>
       )}
 
-      {/* Floating Cart Button */}
       {cartItemCount > 0 && (
         <button 
           className={`floating-cart-btn ${isCartAnimating ? 'cart-animate' : ''}`}
