@@ -281,7 +281,15 @@ const CheckoutModal = ({ isOpen, onClose, total, onConfirm }) => {
         .btn-confirm-luxury:hover { background-position: right center; transform: translateY(-2px); }
 
         @media (max-width: 480px) {
-          .modal-content-luxury.ultra-compact { border-radius: 0; border: none; height: auto; max-height: 100vh; }
+          .modal-overlay-luxury { align-items: flex-start; padding: 0; }
+          .modal-content-luxury.ultra-compact { 
+            border-radius: 0; 
+            border-left: none; 
+            border-right: none; 
+            border-top: none;
+            height: 100%; 
+            max-height: 100vh; 
+          }
           .form-row { flex-direction: column; gap: 0.75rem; }
         }
       `}</style>
