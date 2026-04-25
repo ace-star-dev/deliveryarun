@@ -83,7 +83,6 @@ h1, h2, h3, .luxury-title {
   top: 80px; /* Below header */
   z-index: 50;
   border-bottom: 1px solid var(--border-color);
-  margin: 0 -1rem;
 }
 
 .category-nav-container::-webkit-scrollbar {
@@ -273,6 +272,14 @@ h1, h2, h3, .luxury-title {
 .reveal-item {
   opacity: 0;
   transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+ansform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
