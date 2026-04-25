@@ -149,15 +149,15 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
           right: 0;
           bottom: 0;
           width: 100%;
-          maxWidth: 420px;
+          max-width: 420px;
           background: linear-gradient(165deg, #0d0d0f 0%, #050505 100%);
-          borderLeft: '1px solid rgba(207, 181, 59, 0.2)',
-          zIndex: 4000,
-          transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
+          border-left: 1px solid rgba(207, 181, 59, 0.2);
+          z-index: 4000;
+          transform: translateX(100%);
           transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           display: flex;
-          flexDirection: column;
-          boxShadow: -20px 0 60px rgba(0,0,0,0.9);
+          flex-direction: column;
+          box-shadow: -20px 0 60px rgba(0,0,0,0.9);
         }
 
         .cart-sidebar-luxury.open {
@@ -166,10 +166,10 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
 
         .cart-header-luxury {
           padding: 2rem;
-          borderBottom: 1px solid rgba(207, 181, 59, 0.1);
+          border-bottom: 1px solid rgba(207, 181, 59, 0.1);
           display: flex;
-          justifyContent: space-between;
-          alignItems: flex-start;
+          justify-content: space-between;
+          align-items: flex-start;
           background: rgba(255, 255, 255, 0.02);
         }
 
@@ -203,7 +203,7 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
 
         .cart-content-luxury {
           flex-grow: 1;
-          overflowY: auto;
+          overflow-y: auto;
           padding: 1.5rem;
         }
 
@@ -230,7 +230,7 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
         }
         .item-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-        .item-details-luxury { flex-grow: 1; display: flex; flexDirection: column; justifyContent: center; }
+        .item-details-luxury { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
         
         .item-name-luxury { 
           color: #fff; 
@@ -272,7 +272,7 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
         }
         .btn-remove-luxury:hover { color: var(--burgundy-red); }
 
-        .suggestions-section-luxury { marginTop: 2.5rem; }
+        .suggestions-section-luxury { margin-top: 2.5rem; }
         .suggestions-title { 
           font-size: 0.65rem; 
           color: var(--accent-gold); 
@@ -314,8 +314,8 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
         .cart-footer-luxury {
           padding: 2rem;
           background: #050505;
-          borderTop: 2px solid var(--accent-gold);
-          boxShadow: 0 -10px 40px rgba(0,0,0,0.5);
+          border-top: 2px solid var(--accent-gold);
+          box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
         }
 
         .total-container-luxury {
