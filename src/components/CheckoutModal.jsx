@@ -38,57 +38,66 @@ const CheckoutModal = ({ isOpen, onClose, total, onConfirm }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content animate-fade-in compact-modal">
-        <div className="modal-header-compact">
-          <h3 style={{ fontSize: '1.1rem', fontFamily: 'var(--font-display)', color: 'var(--accent-gold)' }}>FINALIZAR PEDIDO</h3>
-          <button className="btn-close-compact" onClick={onClose}><X size={18} /></button>
+    <div className="modal-overlay-luxury">
+      <div className="modal-content-luxury animate-fade-in">
+        <div className="modal-header-luxury">
+          <div className="title-group">
+            <span className="subtitle-mini">CONFIRMACIÓN</span>
+            <h3>FINALIZAR PEDIDO</h3>
+          </div>
+          <button className="btn-close-luxury" onClick={onClose}><X size={20} /></button>
         </div>
 
-        <form onSubmit={handleSubmit} className="checkout-form-compact">
+        <form onSubmit={handleSubmit} className="checkout-form-luxury">
           <div className="form-row">
-            <div className="form-group-compact">
-              <label><User size={13} /> Nombre</label>
-              <input 
-                type="text" 
-                name="name" 
-                required 
-                placeholder="Tu nombre"
-                value={formData.name}
-                onChange={handleChange}
-              />
+            <div className="form-group-luxury">
+              <label>NOMBRE COMPLETO</label>
+              <div className="input-wrapper">
+                <User size={14} className="input-icon" />
+                <input 
+                  type="text" 
+                  name="name" 
+                  required 
+                  placeholder="Escriba su nombre..."
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
-            <div className="form-group-compact">
-              <label><Phone size={13} /> Teléfono</label>
-              <input 
-                type="tel" 
-                name="phone" 
-                required 
-                placeholder="0981..."
-                value={formData.phone}
-                onChange={handleChange}
-              />
+            <div className="form-group-luxury">
+              <label>TELÉFONO</label>
+              <div className="input-wrapper">
+                <Phone size={14} className="input-icon" />
+                <input 
+                  type="tel" 
+                  name="phone" 
+                  required 
+                  placeholder="Ej: 0981..."
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
           </div>
 
-          <div className="form-group-compact">
-            <label><MapPin size={13} /> Dirección de Entrega</label>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div className="form-group-luxury">
+            <label>DIRECCIÓN DE ENTREGA</label>
+            <div className="input-wrapper">
+              <MapPin size={14} className="input-icon" />
               <input 
                 type="text" 
                 name="address" 
                 required 
-                placeholder="Calle, Nro de casa, Barrio"
+                placeholder="Calle, Nro de casa, Barrio..."
                 value={formData.address}
                 onChange={handleChange}
-                style={{ flexGrow: 1 }}
               />
               <button 
                 type="button" 
-                className={`gps-btn ${formData.locationUrl ? 'active' : ''}`}
+                className={`gps-btn-luxury ${formData.locationUrl ? 'active' : ''}`}
                 onClick={handleGetLocation}
-                title="Compartir GPS"
+                title="Compartir Ubicación GPS"
               >
                 {formData.locationUrl ? <Check size={16} /> : <MapPin size={16} />}
               </button>
@@ -96,184 +105,276 @@ const CheckoutModal = ({ isOpen, onClose, total, onConfirm }) => {
           </div>
 
           <div className="form-row">
-            <div className="form-group-compact" style={{ flex: 1 }}>
-              <label><CreditCard size={13} /> Método de Pago</label>
-              <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange}>
-                <option value="Efectivo">Efectivo</option>
-                <option value="Tarjeta">Tarjeta (en entrega)</option>
-                <option value="Transferencia">Transferencia</option>
-              </select>
+            <div className="form-group-luxury">
+              <label>MÉTODO DE PAGO</label>
+              <div className="input-wrapper">
+                <CreditCard size={14} className="input-icon" />
+                <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange}>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Tarjeta">Tarjeta (en la entrega)</option>
+                  <option value="Transferencia">Transferencia Bancaria</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <div className="form-group-compact">
-            <label><MessageSquare size={13} /> Notas (Opcional)</label>
-            <textarea 
-              name="notes" 
-              placeholder="Aclaraciones, timbres, etc."
-              value={formData.notes}
-              onChange={handleChange}
-              rows="2"
-            ></textarea>
-          </div>
-
-          <div className="order-summary-compact">
-            <div className="summary-row-compact total-row">
-              <span>TOTAL A PAGAR:</span>
-              <span>{formatCurrency(total)}</span>
+          <div className="form-group-luxury">
+            <label>NOTAS ADICIONALES</label>
+            <div className="input-wrapper">
+              <MessageSquare size={14} className="input-icon top" />
+              <textarea 
+                name="notes" 
+                placeholder="Aclaraciones, timbres, referencias..."
+                value={formData.notes}
+                onChange={handleChange}
+                rows="2"
+              ></textarea>
             </div>
           </div>
 
-          <button type="submit" className="btn-confirm-compact">
-            ENVIAR PEDIDO POR WHATSAPP
+          <div className="summary-card-luxury">
+            <div className="summary-line">
+              <span className="label">SUBTOTAL</span>
+              <span className="value">{formatCurrency(total)}</span>
+            </div>
+            <div className="summary-line total">
+              <span className="label">TOTAL FINAL</span>
+              <span className="value-gold">{formatCurrency(total)}</span>
+            </div>
+          </div>
+
+          <button type="submit" className="btn-confirm-luxury">
+            ORDENAR POR WHATSAPP
           </button>
+          
+          <p className="footer-secure">
+            <Check size={10} /> Pedido seguro vía cifrado de WhatsApp
+          </p>
         </form>
       </div>
 
       <style>{`
-        .modal-overlay {
+        .modal-overlay-luxury {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.85);
-          backdrop-filter: blur(8px);
+          background: rgba(5, 5, 5, 0.9);
+          backdrop-filter: blur(15px);
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 2000;
-          padding: 1rem;
+          z-index: 3000;
+          padding: 1.5rem;
         }
-        .compact-modal {
-          background: #0a0a0a;
+        
+        .modal-content-luxury {
+          background: linear-gradient(145deg, #0d0d0f 0%, #050505 100%);
           width: 100%;
-          max-width: 440px;
-          border-radius: 8px;
-          border: 1px solid var(--accent-gold);
-          box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-          max-height: 95vh;
-          overflow-y: auto;
+          max-width: 480px;
+          border-radius: 4px;
+          border: 1px solid rgba(207, 181, 59, 0.2);
+          box-shadow: 0 30px 70px rgba(0,0,0,0.8), inset 0 0 40px rgba(207, 181, 59, 0.03);
+          position: relative;
+          overflow: hidden;
         }
-        .modal-header-compact {
-          padding: 1rem 1.25rem;
-          border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+
+        .modal-content-luxury::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(to right, transparent, var(--accent-gold), transparent);
+        }
+
+        .modal-header-luxury {
+          padding: 1.75rem 2rem;
+          border-bottom: 1px solid rgba(207, 181, 59, 0.1);
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          background: linear-gradient(to right, #0a0a0a, #151515);
+          align-items: flex-start;
         }
-        .btn-close-compact {
+
+        .title-group h3 {
+          margin: 0;
+          font-family: var(--font-display);
+          color: #fff;
+          letter-spacing: 0.15em;
+          font-size: 1.25rem;
+          font-weight: 600;
+        }
+
+        .subtitle-mini {
+          font-family: var(--font-accent);
+          font-size: 0.6rem;
+          color: var(--accent-gold);
+          letter-spacing: 0.4em;
+          display: block;
+          margin-bottom: 0.5rem;
+        }
+
+        .btn-close-luxury {
           background: none;
           border: none;
           color: var(--text-secondary);
           cursor: pointer;
-          opacity: 0.6;
+          opacity: 0.5;
           transition: 0.3s;
+          padding: 5px;
         }
-        .btn-close-compact:hover { opacity: 1; color: var(--accent-gold); }
-        
-        .checkout-form-compact {
-          padding: 1.25rem;
+        .btn-close-luxury:hover { opacity: 1; color: var(--accent-gold); transform: rotate(90deg); }
+
+        .checkout-form-luxury {
+          padding: 2rem;
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
+          gap: 1.25rem;
         }
+
         .form-row {
           display: flex;
-          gap: 0.75rem;
+          gap: 1.25rem;
         }
-        .form-group-compact {
+
+        .form-group-luxury {
           display: flex;
           flex-direction: column;
-          gap: 0.35rem;
+          gap: 0.6rem;
           flex: 1;
         }
-        .form-group-compact label {
+
+        .form-group-luxury label {
+          font-size: 0.65rem;
+          color: var(--text-secondary);
+          letter-spacing: 0.2em;
+          font-weight: 700;
+          font-family: var(--font-base);
+        }
+
+        .input-wrapper {
+          position: relative;
           display: flex;
           align-items: center;
-          gap: 0.4rem;
-          font-size: 0.7rem;
-          color: var(--accent-gold);
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          font-weight: 600;
         }
-        .form-group-compact input, 
-        .form-group-compact select, 
-        .form-group-compact textarea {
-          background: #111;
-          border: 1px solid rgba(255,255,255,0.08);
+
+        .input-icon {
+          position: absolute;
+          left: 0.75rem;
+          color: var(--accent-gold);
+          opacity: 0.6;
+        }
+        .input-icon.top { top: 0.75rem; }
+
+        .checkout-form-luxury input,
+        .checkout-form-luxury select,
+        .checkout-form-luxury textarea {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.07);
           border-radius: 4px;
-          padding: 0.6rem;
+          padding: 0.8rem 1rem 0.8rem 2.5rem;
           color: #fff;
-          font-size: 0.85rem;
+          font-size: 0.9rem;
           width: 100%;
-          transition: 0.3s;
+          transition: all 0.4s ease;
+          font-family: var(--font-base);
         }
-        .form-group-compact input:focus {
-          border-color: var(--accent-gold);
-          background: #151515;
+
+        .checkout-form-luxury input:focus,
+        .checkout-form-luxury select:focus,
+        .checkout-form-luxury textarea:focus {
           outline: none;
+          border-color: var(--accent-gold);
+          background: rgba(207, 181, 59, 0.05);
+          box-shadow: 0 0 15px rgba(207, 181, 59, 0.1);
         }
-        
-        .gps-btn {
-          background: rgba(212, 175, 55, 0.1);
-          border: 1px solid rgba(212, 175, 55, 0.3);
+
+        .gps-btn-luxury {
+          position: absolute;
+          right: 0.5rem;
+          background: rgba(207, 181, 59, 0.15);
+          border: 1px solid rgba(207, 181, 59, 0.3);
           color: var(--accent-gold);
-          width: 42px;
-          height: 38px;
+          width: 34px;
+          height: 34px;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 4px;
+          border-radius: 3px;
           cursor: pointer;
-          flex-shrink: 0;
           transition: 0.3s;
         }
-        .gps-btn.active {
-          background: #25D366;
-          color: #000;
-          border-color: #25D366;
-        }
-        
-        .order-summary-compact {
-          background: rgba(255,255,255,0.02);
-          padding: 0.75rem;
+        .gps-btn-luxury:hover { background: var(--accent-gold); color: #000; }
+        .gps-btn-luxury.active { background: #1a5c2e; border-color: #2ecc71; color: #fff; }
+
+        .summary-card-luxury {
+          background: rgba(207, 181, 59, 0.03);
+          padding: 1.5rem;
           border-radius: 4px;
-          margin-top: 0.25rem;
-          border-left: 3px solid var(--accent-gold);
-        }
-        .summary-row-compact {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.8rem;
-        }
-        .total-row {
-          font-weight: 800;
-          font-size: 1rem;
-          color: #fff;
-        }
-        
-        .btn-confirm-compact {
-          width: 100%;
-          padding: 0.9rem;
-          background: var(--accent-gold);
-          color: #000;
-          font-weight: 800;
-          border: none;
-          border-radius: 4px;
-          font-size: 0.8rem;
-          cursor: pointer;
-          letter-spacing: 0.1em;
+          border: 1px solid rgba(207, 181, 59, 0.1);
           margin-top: 0.5rem;
-          transition: 0.3s;
-        }
-        .btn-confirm-compact:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(207, 181, 59, 0.4);
         }
 
-        @media (max-width: 480px) {
-          .form-row { flex-direction: column; }
-          .compact-modal { border-radius: 0; height: 100%; max-height: 100vh; }
+        .summary-line {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.75rem;
+        }
+        .summary-line .label { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-secondary); }
+        .summary-line .value { font-size: 0.9rem; color: #fff; font-weight: 500; }
+
+        .summary-line.total {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid rgba(207, 181, 59, 0.2);
+        }
+        .summary-line.total .label { font-size: 0.8rem; font-weight: 800; color: #fff; }
+        .value-gold {
+          color: var(--accent-gold);
+          font-size: 1.4rem;
+          font-weight: 700;
+          font-family: var(--font-display);
+          text-shadow: 0 0 20px rgba(207, 181, 59, 0.3);
+        }
+
+        .btn-confirm-luxury {
+          width: 100%;
+          padding: 1.25rem;
+          background: linear-gradient(to right, #CFB53B, #B8860B, #CFB53B);
+          background-size: 200% auto;
+          color: #000;
+          font-weight: 900;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          cursor: pointer;
+          letter-spacing: 0.2em;
+          transition: 0.5s;
+          font-family: var(--font-display);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .btn-confirm-luxury:hover {
+          background-position: right center;
+          transform: translateY(-3px);
+          box-shadow: 0 15px 40px rgba(207, 181, 59, 0.3);
+        }
+
+        .footer-secure {
+          text-align: center;
+          font-size: 0.6rem;
+          color: var(--text-secondary);
+          opacity: 0.5;
+          letter-spacing: 0.1em;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.4rem;
+          margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+          .form-row { flex-direction: column; gap: 1.25rem; }
+          .modal-content-luxury { border-radius: 0; border: none; height: 100%; max-height: 100vh; overflow-y: auto; }
+          .checkout-form-luxury { padding: 1.5rem; }
         }
       `}</style>
     </div>
