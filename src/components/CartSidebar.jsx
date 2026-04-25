@@ -8,7 +8,7 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
   const suggestions = products
     .filter(p => !cart.find(item => item._id === p._id))
     .filter(p => p.category === "Bebidas" || p.category === "Signature" || p.price < 50000)
-    .slice(0, 2);
+    .slice(0, 3);
 
   const getImageUrl = (image) => {
     if (!image) return null;
