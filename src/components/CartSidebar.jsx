@@ -151,9 +151,9 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
           width: 100%;
           maxWidth: 420px;
           background: linear-gradient(165deg, #0d0d0f 0%, #050505 100%);
-          borderLeft: 1px solid rgba(207, 181, 59, 0.2);
-          zIndex: 3000;
-          transform: translateX(100%);
+          borderLeft: '1px solid rgba(207, 181, 59, 0.2)',
+          zIndex: 4000,
+          transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
           transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           display: flex;
           flexDirection: column;

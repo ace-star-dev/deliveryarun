@@ -169,6 +169,7 @@ function App() {
     
     setIsCartAnimating(true);
     setShowNotification(true);
+    setIsCartOpen(true); // Abre o carrinho automaticamente
     setTimeout(() => setIsCartAnimating(false), 500);
     setTimeout(() => setShowNotification(false), 2000);
   };
