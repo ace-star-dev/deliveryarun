@@ -3,8 +3,10 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import CategoryNav from './components/CategoryNav';
 import ProductCard from './components/ProductCard';
+import CategoryCards from './components/CategoryCards';
 import CartSidebar from './components/CartSidebar';
 import CheckoutModal from './components/CheckoutModal';
+import WhatsAppFloat from './components/WhatsAppFloat';
 import Footer from './components/Footer';
 import { ShoppingBag, CheckCircle } from 'lucide-react';
 import { client } from './utils/sanity';
@@ -24,6 +26,21 @@ function App() {
   const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const cartBtnRef = useRef(null);
+  const scrollProgressRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Mouse/Interactive scroll progress
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (scrollProgressRef.current) {
+        scrollProgressRef.current.style.width = scrolled + "%";
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     // Fetch products, categories and settings from Sanity
@@ -190,6 +207,9 @@ function App() {
 
   return (
     <div style={{ position: 'relative' }}>
+      {/* Scroll Progress Bar */}
+      <div className="scroll-progress" ref={scrollProgressRef}></div>
+      
       {/* Interactive Mouse Glow */}
       <div 
         className="mouse-glow" 
@@ -200,6 +220,25 @@ function App() {
       
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Hero settings={settings} />
+        
+        <section className="container" style={{ padding: '6rem 0' }}>
+           <div className="reveal-item" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span className="subtitle-gold" style={{ letterSpacing: '0.6em', color: 'var(--accent-gold)', marginBottom: '1rem', display: 'block' }}>EXPERIENCIA</span>
+              <h2 className="main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Explora por Categoría</h2>
+           </div>
+           <CategoryCards onSelectCategory={(cat) => {
+             setActiveCategory(cat);
+             const menuEl = document.getElementById('menu');
+             if (menuEl) {
+               const offset = 140;
+               const bodyRect = document.body.getBoundingClientRect().top;
+               const elementRect = menuEl.getBoundingClientRect().top;
+               const elementPosition = elementRect - bodyRect;
+               const offsetPosition = elementPosition - offset;
+               window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+             }
+           }} />
+        </section>
         
         <section id="menu" className="container" style={{ padding: '4rem 0 10rem' }}>
           <div className="section-title-wrapper reveal-item" style={{ 
@@ -279,6 +318,7 @@ function App() {
         </button>
       )}
 
+      <WhatsAppFloat phone={settings?.whatsapp || "+595984431766"} />
       <Footer settings={settings} />
 
       <CartSidebar 

@@ -78,11 +78,11 @@ export default function CategoryCards({ onSelectCategory }) {
               display: 'inline-flex',
               padding: '0.5rem 1.25rem',
               background: 'transparent',
-              color: 'var(--accent-color)',
+            color: 'var(--accent-gold)',
               fontSize: '0.9rem',
               fontWeight: 600,
               borderRadius: '8px',
-              border: '1px solid var(--accent-color)',
+              border: '1px solid var(--accent-gold)',
               transition: 'all 0.3s ease',
               textTransform: 'uppercase',
               letterSpacing: '0.1em'
@@ -97,8 +97,8 @@ export default function CategoryCards({ onSelectCategory }) {
           transform: scale(1.1);
         }
         .category-card:hover .view-btn {
-          background: var(--accent-color);
-          color: var(--bg-primary);
+          background: var(--accent-gold);
+          color: #000;
           box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
         }
       `}</style>

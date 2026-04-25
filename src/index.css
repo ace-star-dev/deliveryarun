@@ -21,6 +21,18 @@
   --transition-luxury: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Scroll Progress Bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--accent-gold), var(--burgundy-red));
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s ease-out;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

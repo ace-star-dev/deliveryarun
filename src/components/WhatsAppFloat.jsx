@@ -1,9 +1,9 @@
 import { MessageCircle } from 'lucide-react';
 
-const WhatsAppFloat = () => {
-  const phoneNumber = "595981123456"; // Replace with actual restaurant number
-  const message = encodeURIComponent("¡Hola! Me gustaría hacer una consulta sobre el menú.");
-  const url = `https://wa.me/${phoneNumber}?text=${message}`;
+const WhatsAppFloat = ({ phone, message = "¡Hola! Me gustaría hacer una consulta." }) => {
+  if (!phone) return null;
+  
+  const url = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
 
   return (
     <a 

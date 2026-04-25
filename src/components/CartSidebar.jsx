@@ -17,7 +17,7 @@ export default function CartSidebar({ isOpen, onClose, cart, onRemove, onUpdateQ
     if (image.asset) {
       try {
         return urlFor(image).width(120).url();
-      } catch (e) {
+      } catch {
         return null;
       }
     }

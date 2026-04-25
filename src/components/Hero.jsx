@@ -1,4 +1,3 @@
-import { ChevronRight } from 'lucide-react';
 import { urlFor } from '../utils/sanity';
 
 export default function Hero({ settings }) {

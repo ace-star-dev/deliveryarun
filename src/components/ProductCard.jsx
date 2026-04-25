@@ -15,7 +15,7 @@ export default function ProductCard({ product, onAdd }) {
     if (product.image.asset) {
       try {
         return urlFor(product.image).width(600).url();
-      } catch (e) {
+      } catch {
         return null;
       }
     }
