@@ -1,6 +1,6 @@
-# ARUNA Asian Bar - Delivery Webapp
+# ARUN Asian Bar - Delivery Webapp
 
-Una experiencia sensorial que trasciende lo ordinario. Este es o sistema de delivery premium para **Aruna Asian Bar**, localizado em Salto del Guairá, Paraguay.
+Una experiencia sensorial que trasciende lo ordinario. Este es o sistema de delivery premium para **Arun Asian Bar**, localizado em Salto del Guairá, Paraguay.
 
 ## 🍱 Visión General
 

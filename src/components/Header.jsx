@@ -33,7 +33,7 @@ export default function Header({ settings, cartItemCount, onCartClick }) {
         alignItems: 'center', 
         justifyContent: 'space-between',
         width: '100%',
-        padding: '0 2rem'
+        padding: '0 1.25rem'
       }}>
         
         <div style={{ display: 'flex', alignItems: 'center' }}>
