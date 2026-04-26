@@ -18,7 +18,8 @@ export default function Hero({ settings }) {
       alignItems: 'center',
       justifyContent: 'center',
       background: 'transparent',
-      width: '100%'
+      width: '100%',
+      overflow: 'hidden'
     }}>
       {/* Immersive Image that dictates height */}
       <img 

@@ -284,19 +284,27 @@ const CheckoutModal = ({ isOpen, onClose, total, onConfirm }) => {
           .modal-overlay-luxury { 
             align-items: flex-start; 
             padding: 0; 
-            overflow-x: hidden; 
+            overflow-x: hidden;
+            height: 100dvh;
           }
           .modal-content-luxury.ultra-compact { 
             width: 100%;
             margin: 0;
             border-radius: 0; 
             border: none;
-            height: 100%; 
-            max-height: 100vh; 
+            min-height: 100dvh;
+            height: auto;
+            max-height: none; 
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+          }
+          .checkout-form-luxury.compact { 
+            padding: 1.25rem; 
+            flex-grow: 1;
+            padding-bottom: 3rem;
           }
           .form-row { flex-direction: column; gap: 0.75rem; }
-          .checkout-form-luxury.compact { padding: 1.25rem; }
         }
       `}</style>
     </div>
