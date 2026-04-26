@@ -19,7 +19,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  max-width: 100%;
 }
 
 html, body {
@@ -30,13 +29,43 @@ html, body {
   font-family: var(--font-base);
   min-height: 100vh;
   -webkit-text-size-adjust: 100%;
+  position: relative;
 }
 
-.app-container {
+.app-wrapper {
   width: 100%;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+}
+
+/* Luxury Elements Restored */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--accent-gold), var(--burgundy-red));
+  z-index: 5000;
+  width: 0%;
+  transition: width 0.1s ease-out;
+  pointer-events: none;
+}
+
+.mouse-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(74, 4, 4, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+@media (max-width: 768px) {
+  .mouse-glow { display: none; }
 }
 
 .container {
@@ -70,7 +99,7 @@ h1, h2, h3 {
 
 .category-tab {
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   padding: 0.6rem 1.2rem;
@@ -126,6 +155,41 @@ h1, h2, h3 {
   font-weight: 900;
   z-index: 1000;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Floating Cart */
+.floating-cart-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 1rem;
+  background: var(--accent-gold);
+  color: #000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  border: none;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--burgundy-red);
+  color: #fff;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-primary);
 }
 
 /* Reveal */

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CategoryNav from './components/CategoryNav';
@@ -6,7 +6,7 @@ import ProductCard from './components/ProductCard';
 import CartSidebar from './components/CartSidebar';
 import CheckoutModal from './components/CheckoutModal';
 import Footer from './components/Footer';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ShoppingBag } from 'lucide-react';
 import { client } from './utils/sanity';
 import { formatWhatsAppMessage } from './utils/whatsapp';
 import { products as localProducts, categories as localCategories } from './data/products';
@@ -21,6 +21,31 @@ function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [settings, setSettings] = useState({});
   const [showNotification, setShowNotification] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const scrollProgressRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (scrollProgressRef.current) {
+        scrollProgressRef.current.style.width = scrolled + "%";
+      }
+    };
+
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,17 +53,9 @@ function App() {
         setLoading(true);
         const query = `{
           "products": *[_type == "dish"] {
-            _id,
-            name,
-            description,
-            price,
-            "category": category->title,
-            image,
-            available
+            _id, name, description, price, "category": category->title, image, available
           },
-          "categories": *[_type == "category"] {
-            title
-          },
+          "categories": *[_type == "category"] { title },
           "settings": *[_type == "siteSettings"][0] {
             whatsapp, instagram, address, addressLink, schedule,
             heroTitle, heroSubtitle, heroImage, footerDescription,
@@ -52,19 +69,12 @@ function App() {
               setProducts(sanityProducts.map(p => {
                 if (!p.image) {
                   const localFileName = {
-                    "Sashimi Mostaza": "sashimi_mostaza.jpg",
-                    "Sashimi na Manteiga": "sashimi_manteiga.jpg",
-                    "Pulpo Canadiense": "pulpo.jpg",
-                    "Uramaki Bacon & Couve": "uramaki.jpg",
-                    "Niguiri de Salmón": "niguiri.jpg",
-                    "Niguiri de Salmón Trufado": "niguiri.jpg",
-                    "Poke II": "poke.jpg",
-                    "Poke Arun": "poke.jpg",
-                    "Mignon N’ Pasta": "mignon.jpg",
-                    "Mignon ao Molho de Ostras": "mignon.jpg",
-                    "Combinado Arun": "combinado.jpg",
-                    "Combo Especial (20 peças)": "combinado.jpg",
-                    "Lychee Martini": "drink.jpg"
+                    "Sashimi Mostaza": "sashimi_mostaza.jpg", "Sashimi na Manteiga": "sashimi_manteiga.jpg",
+                    "Pulpo Canadiense": "pulpo.jpg", "Uramaki Bacon & Couve": "uramaki.jpg",
+                    "Niguiri de Salmón": "niguiri.jpg", "Niguiri de Salmón Trufado": "niguiri.jpg",
+                    "Poke II": "poke.jpg", "Poke Arun": "poke.jpg", "Mignon N’ Pasta": "mignon.jpg",
+                    "Mignon ao Molho de Ostras": "mignon.jpg", "Combinado Arun": "combinado.jpg",
+                    "Combo Especial (20 peças)": "combinado.jpg", "Lychee Martini": "drink.jpg"
                   }[p.name];
                   if (localFileName) return { ...p, image: { localPath: `/${localFileName}` } };
                 }
@@ -114,22 +124,17 @@ function App() {
     setTimeout(() => setShowNotification(false), 2000);
   };
 
-  const handleCheckoutConfirm = (customerInfo) => {
-    const url = formatWhatsAppMessage(cart, total, customerInfo, settings?.whatsapp || "+595984431766");
-    window.open(url, '_blank');
-    setIsCheckoutOpen(false);
-    setCart([]);
-    setIsCartOpen(false);
-  };
-
   return (
-    <div className="app-container">
+    <div className="app-wrapper">
+      <div className="scroll-progress" ref={scrollProgressRef}></div>
+      <div className="mouse-glow" style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }} />
+      
       <Header settings={settings} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
       
-      <main className="main-content">
+      <main style={{ width: '100%', overflow: 'hidden' }}>
         <Hero settings={settings} />
         
-        <section id="menu" className="container menu-section">
+        <section id="menu" className="container" style={{ padding: '4rem 0 10rem' }}>
           <div className="section-title-wrapper reveal-item">
             <span className="subtitle-gold">{settings?.menuSubtitle || "Nuestra Selección"}</span>
             <h2 className="main-title gold-glow-text">{settings?.menuTitle || "Obras Maestras"}</h2>
@@ -146,9 +151,7 @@ function App() {
                 onSelect={(cat) => {
                   setActiveCategory(cat);
                   const menuEl = document.getElementById('menu');
-                  if (menuEl) {
-                    window.scrollTo({ top: menuEl.offsetTop - 100, behavior: 'smooth' });
-                  }
+                  if (menuEl) window.scrollTo({ top: menuEl.offsetTop - 100, behavior: 'smooth' });
                 }} 
               />
               <div className="product-grid">
@@ -164,6 +167,13 @@ function App() {
       </main>
 
       {showNotification && <div className="cart-notification">ITEM AÑADIDO</div>}
+
+      {cartItemCount > 0 && (
+        <button className="floating-cart-btn" onClick={() => setIsCartOpen(true)}>
+          <ShoppingBag size={28} />
+          <span className="cart-badge">{cartItemCount}</span>
+        </button>
+      )}
 
       <Footer settings={settings} />
 
@@ -182,7 +192,13 @@ function App() {
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
         total={total}
-        onConfirm={handleCheckoutConfirm}
+        onConfirm={(info) => {
+          const url = formatWhatsAppMessage(cart, total, info, settings?.whatsapp || "+595984431766");
+          window.open(url, '_blank');
+          setIsCheckoutOpen(false);
+          setCart([]);
+          setIsCartOpen(false);
+        }}
       />
     </div>
   );
