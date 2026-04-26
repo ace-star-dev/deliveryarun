@@ -1,13 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CategoryNav from './components/CategoryNav';
 import ProductCard from './components/ProductCard';
 import CartSidebar from './components/CartSidebar';
 import CheckoutModal from './components/CheckoutModal';
-import WhatsAppFloat from './components/WhatsAppFloat';
 import Footer from './components/Footer';
-import { ShoppingBag, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { client } from './utils/sanity';
 import { formatWhatsAppMessage } from './utils/whatsapp';
 import { products as localProducts, categories as localCategories } from './data/products';
@@ -20,44 +19,8 @@ function App() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const [settings, setSettings] = useState({});
-  const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const cartBtnRef = useRef(null);
-  const scrollProgressRef = useRef(null);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    const handleScroll = () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (scrollProgressRef.current) {
-        scrollProgressRef.current.style.width = scrolled + "%";
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    
-    const handleMouseMove = (e) => {
-      if (!isMobile) {
-        setMousePos({ x: e.clientX, y: e.clientY });
-      }
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [isMobile]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,27 +40,16 @@ function App() {
             title
           },
           "settings": *[_type == "siteSettings"][0] {
-            whatsapp,
-            instagram,
-            address,
-            addressLink,
-            schedule,
-            heroTitle,
-            heroSubtitle,
-            heroImage,
-            footerDescription,
-            menuTitle,
-            menuSubtitle
+            whatsapp, instagram, address, addressLink, schedule,
+            heroTitle, heroSubtitle, heroImage, footerDescription,
+            menuTitle, menuSubtitle
           }
         }`;
         const data = await client.fetch(query);
-        
         if (data) {
             const { products: sanityProducts, categories: sanityCategories, settings: sanitySettings } = data;
-            
-            let finalProducts = [];
             if (sanityProducts && sanityProducts.length > 0) {
-              finalProducts = sanityProducts.map(p => {
+              setProducts(sanityProducts.map(p => {
                 if (!p.image) {
                   const localFileName = {
                     "Sashimi Mostaza": "sashimi_mostaza.jpg",
@@ -114,44 +66,27 @@ function App() {
                     "Combo Especial (20 peças)": "combinado.jpg",
                     "Lychee Martini": "drink.jpg"
                   }[p.name];
-
-                  if (localFileName) {
-                    return { ...p, image: { localPath: `/${localFileName}` } };
-                  }
+                  if (localFileName) return { ...p, image: { localPath: `/${localFileName}` } };
                 }
                 return p;
-              });
-            } else {
-              finalProducts = localProducts.map(p => ({ ...p, _id: p.id.toString() }));
+              }));
             }
-            setProducts(finalProducts);
-            if (sanitySettings) {
-                setSettings(sanitySettings);
-            }
-            
+            if (sanitySettings) setSettings(sanitySettings);
             if (sanityCategories && sanityCategories.length > 0) {
               setCategories(["Todos", ...sanityCategories.map(c => c.title)]);
-            } else {
-              const currentProducts = sanityProducts && sanityProducts.length > 0 ? sanityProducts : localProducts;
-              const uniqueCategories = ["Todos", ...new Set(currentProducts.map(p => p.category).filter(Boolean))];
-              setCategories(uniqueCategories);
             }
         }
-        
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data from Sanity, using fallback:", error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
-
     fetchData();
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.1 });
 
@@ -159,14 +94,11 @@ function App() {
         document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
     }, 1000);
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-
   const filterProducts = activeCategory === "Todos" 
     ? products.filter(p => p.available !== false)
     : products.filter(p => p.category === activeCategory && p.available !== false);
@@ -174,31 +106,12 @@ function App() {
   const addToCart = (product) => {
     setCart(prev => {
       const existing = prev.find(item => item._id === product._id);
-      if (existing) {
-        return prev.map(item => item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item);
-      }
+      if (existing) return prev.map(item => item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item);
       return [...prev, { ...product, quantity: 1 }];
     });
-    
     setIsCartOpen(true);
-    setIsCartAnimating(true);
     setShowNotification(true);
-    setTimeout(() => setIsCartAnimating(false), 500);
     setTimeout(() => setShowNotification(false), 2000);
-  };
-
-  const removeFromCart = (id) => {
-    setCart(prev => prev.filter(item => item._id !== id));
-  };
-
-  const updateQuantity = (id, delta) => {
-    setCart(prev => prev.map(item => {
-      if (item._id === id) {
-        const newQuantity = item.quantity + delta;
-        return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
-      }
-      return item;
-    }));
   };
 
   const handleCheckoutConfirm = (customerInfo) => {
@@ -210,40 +123,21 @@ function App() {
   };
 
   return (
-    <div className="app-wrapper">
-      <div className="scroll-progress" ref={scrollProgressRef}></div>
-      
-      {!isMobile && (
-        <div 
-          className="mouse-glow" 
-          style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
-        />
-      )}
-      
+    <div className="app-container">
       <Header settings={settings} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
       
-      <main style={{ position: 'relative', zIndex: 1, width: '100%', overflow: 'hidden' }}>
+      <main className="main-content">
         <Hero settings={settings} />
         
-        <section id="menu" className="container" style={{ padding: '4rem 0 10rem' }}>
-          <div className="section-title-wrapper reveal-item" style={{ 
-            textAlign: 'center', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center',
-            width: '100%',
-            maxWidth: '800px',
-            margin: '0 auto 3rem'
-          }}>
-            <span className="subtitle-gold" style={{ letterSpacing: '0.6em', color: 'var(--accent-gold)', marginBottom: '1rem', display: 'block' }}>{settings?.menuSubtitle || "Nuestra Selección"}</span>
-            <h2 className="main-title gold-glow-text" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', margin: 0, color: 'var(--text-primary)' }}>{settings?.menuTitle || "Obras Maestras"}</h2>
-            <div style={{ width: '80px', height: '2px', background: 'var(--accent-gold)', margin: '2rem auto' }}></div>
+        <section id="menu" className="container menu-section">
+          <div className="section-title-wrapper reveal-item">
+            <span className="subtitle-gold">{settings?.menuSubtitle || "Nuestra Selección"}</span>
+            <h2 className="main-title gold-glow-text">{settings?.menuTitle || "Obras Maestras"}</h2>
+            <div className="title-separator"></div>
           </div>
           
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--accent-gold)' }}>
-              Cargando menú de autor...
-            </div>
+            <div className="loading-state">Cargando menú...</div>
           ) : (
             <>
               <CategoryNav 
@@ -253,20 +147,10 @@ function App() {
                   setActiveCategory(cat);
                   const menuEl = document.getElementById('menu');
                   if (menuEl) {
-                    const offset = 140; 
-                    const bodyRect = document.body.getBoundingClientRect().top;
-                    const elementRect = menuEl.getBoundingClientRect().top;
-                    const elementPosition = elementRect - bodyRect;
-                    const offsetPosition = elementPosition - offset;
-
-                    window.scrollTo({
-                      top: offsetPosition,
-                      behavior: 'smooth'
-                    });
+                    window.scrollTo({ top: menuEl.offsetTop - 100, behavior: 'smooth' });
                   }
                 }} 
               />
-              
               <div className="product-grid">
                 {filterProducts.map((product, index) => (
                   <div key={product._id} className="reveal-item visible" style={{ transitionDelay: `${index * 0.05}s` }}>
@@ -279,39 +163,19 @@ function App() {
         </section>
       </main>
 
-      {showNotification && (
-        <div className="cart-notification">
-          <CheckCircle size={18} /> ITEM AÑADIDO
-        </div>
-      )}
+      {showNotification && <div className="cart-notification">ITEM AÑADIDO</div>}
 
-      {cartItemCount > 0 && (
-        <button 
-          className={`floating-cart-btn ${isCartAnimating ? 'cart-animate' : ''}`}
-          onClick={() => setIsCartOpen(true)}
-          ref={cartBtnRef}
-          style={{ display: 'flex' }}
-        >
-          <ShoppingBag size={30} strokeWidth={1.5} />
-          <span className="cart-badge">{cartItemCount}</span>
-        </button>
-      )}
-
-      <WhatsAppFloat phone={settings?.whatsapp || "+595984431766"} />
       <Footer settings={settings} />
 
       <CartSidebar 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
         cart={cart}
-        onRemove={removeFromCart}
-        onUpdateQuantity={updateQuantity}
+        onRemove={(id) => setCart(prev => prev.filter(item => item._id !== id))}
+        onUpdateQuantity={(id, delta) => setCart(prev => prev.map(item => item._id === id ? { ...item, quantity: Math.max(0, item.quantity + delta) } : item).filter(i => i.quantity > 0))}
         products={products}
         onAdd={addToCart}
-        onCheckout={() => {
-          setIsCartOpen(false);
-          setIsCheckoutOpen(true);
-        }}
+        onCheckout={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
       />
 
       <CheckoutModal 
