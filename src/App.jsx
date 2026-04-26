@@ -20,14 +20,21 @@ function App() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const [settings, setSettings] = useState({});
   const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const cartBtnRef = useRef(null);
   const scrollProgressRef = useRef(null);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const handleScroll = () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -37,8 +44,20 @@ function App() {
       }
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    
+    const handleMouseMove = (e) => {
+      if (!isMobile) {
+        setMousePos({ x: e.clientX, y: e.clientY });
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isMobile]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,11 +146,6 @@ function App() {
     };
 
     fetchData();
-
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -146,7 +160,6 @@ function App() {
     }, 1000);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
     };
   }, []);
@@ -167,9 +180,9 @@ function App() {
       return [...prev, { ...product, quantity: 1 }];
     });
     
+    setIsCartOpen(true);
     setIsCartAnimating(true);
     setShowNotification(true);
-    setIsCartOpen(true); // Abre o carrinho automaticamente
     setTimeout(() => setIsCartAnimating(false), 500);
     setTimeout(() => setShowNotification(false), 2000);
   };
@@ -197,17 +210,19 @@ function App() {
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="app-wrapper">
       <div className="scroll-progress" ref={scrollProgressRef}></div>
       
-      <div 
-        className="mouse-glow" 
-        style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
-      />
+      {!isMobile && (
+        <div 
+          className="mouse-glow" 
+          style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+        />
+      )}
       
       <Header settings={settings} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
       
-      <main style={{ position: 'relative', zIndex: 1 }}>
+      <main style={{ position: 'relative', zIndex: 1, width: '100%', overflow: 'hidden' }}>
         <Hero settings={settings} />
         
         <section id="menu" className="container" style={{ padding: '4rem 0 10rem' }}>
@@ -275,10 +290,7 @@ function App() {
           className={`floating-cart-btn ${isCartAnimating ? 'cart-animate' : ''}`}
           onClick={() => setIsCartOpen(true)}
           ref={cartBtnRef}
-          style={{ 
-            display: 'flex', 
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)' 
-          }}
+          style={{ display: 'flex' }}
         >
           <ShoppingBag size={30} strokeWidth={1.5} />
           <span className="cart-badge">{cartItemCount}</span>
