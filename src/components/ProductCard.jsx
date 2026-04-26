@@ -90,8 +90,14 @@ export default function ProductCard({ product, onAdd }) {
         <button 
           onClick={() => onAdd(product)}
           className="category-tab active add-btn-responsive"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem'
+          }}
         >
-          <Plus size={14} className="plus-icon-hide" />
+          <Plus size={14} />
           <span>AÑADIR</span>
         </button>
       </div>
